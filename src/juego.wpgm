@@ -1,8 +1,17 @@
 import wollok.game.*
-import pepita.*
+import frog.*
+import obstaculos.*
 
 program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
+	//CONFIG
+	game.title("Frogger")
+	game.height(11)
+	game.width(11)
+	game.ground('background.png')
+	
+	game.addVisualCharacter(frog)
+	game.addVisualCharacter(car1)
+	
+	//COMIENZA
 	game.start()
 }
