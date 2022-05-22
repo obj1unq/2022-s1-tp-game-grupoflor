@@ -5,16 +5,22 @@ import obstaculos.*
 program juego {
 	//CONFIG
 	game.title("Frogger")
-	game.height(11)
-	game.width(11)
-	game.ground('background.png')
+	game.height(10)
+	game.width(10)
+	game.boardGround('background2.jpg')
 	
 	game.addVisualCharacter(frog)
-	game.addVisualCharacter(car1)
+	
 	
 	game.onCollideDo(frog, { algo => algo.teEncontro(frog)  } )
 	
 	
+	
+	game.onTick(3000, 'auto', {generadorVehiculos.generarVehiculo()})
+
+	game.onTick(1000, 'auto', {generadorVehiculos.vehiculosGenerados().forEach {vehiculo => vehiculo.moverse()}})
+
+
 	//COMIENZA
 	game.start()
 }

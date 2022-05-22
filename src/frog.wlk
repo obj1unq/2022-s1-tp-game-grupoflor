@@ -2,7 +2,7 @@ import wollok.game.*
 import obstaculos.*
 
 object frog {
-	var property position = game.center()
+	var property position = game.at(5,0)
 	const property image = "frogUP.png"	
 	
 	method ganar() {
