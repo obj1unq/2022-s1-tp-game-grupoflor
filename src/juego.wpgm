@@ -12,6 +12,9 @@ program juego {
 	game.addVisualCharacter(frog)
 	game.addVisualCharacter(car1)
 	
+	game.onCollideDo(frog, { algo => algo.teEncontro(frog)  } )
+	
+	
 	//COMIENZA
 	game.start()
 }
