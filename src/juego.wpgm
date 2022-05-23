@@ -5,8 +5,8 @@ import obstaculos.*
 program juego {
 	//CONFIG
 	game.title("Frogger")
-	game.height(10)
-	game.width(10)
+	game.height(11)
+	game.width(9)
 	game.boardGround('background2.jpg')
 	
 	game.addVisualCharacter(frog)
