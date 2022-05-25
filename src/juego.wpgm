@@ -15,12 +15,13 @@ program juego {
 	game.onCollideDo(frog, { algo => algo.teEncontro(frog)  } )
 	
 	
+	game.onTick(2500, 'auto', {generadorVehiculos.generarVehiculo(generadorAutos)})
+	game.onTick(2000, 'autoCarreras', {generadorVehiculos.generarVehiculo(generadorAutosCarreras)})
 	
-	game.onTick(3000, 'auto', {generadorVehiculos.generarVehiculo()})
 
-	game.onTick(1000, 'auto', {generadorVehiculos.vehiculosGenerados().forEach {vehiculo => vehiculo.moverse()}})
-
-
+	game.onTick(1500, 'auto', {generadorAutos.vehiculosGenerados().forEach {vehiculo => vehiculo.moverse()}})
+	game.onTick(1000, 'autoCarreras', {generadorAutosCarreras.vehiculosGenerados().forEach {vehiculo => vehiculo.moverse()}})
+	
 	//COMIENZA
 	game.start()
 }
