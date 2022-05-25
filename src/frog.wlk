@@ -15,6 +15,6 @@ object frog {
 	
 	method terminar(mensaje) {
 		game.say(self, mensaje)
-		game.schedule(2000, {game.stop()})
+		game.schedule(1000, {game.stop()})
 	}
 }
