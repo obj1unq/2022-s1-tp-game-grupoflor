@@ -7,10 +7,15 @@ program juego {
 	game.title("Frogger")
 	game.height(11)
 	game.width(9)
+	game.cellSize(55)
 	game.boardGround('background2.jpg')
 	
 	game.addVisualCharacter(frog)
 	
+	keyboard.left().onPressDo( { frog.mover(izquierda) } )
+	keyboard.right().onPressDo( { frog.mover(derecha) } )
+	keyboard.up().onPressDo( { frog.mover(arriba) } )
+	keyboard.down().onPressDo( { frog.mover(abajo) } )
 	
 	game.onCollideDo(frog, { algo => algo.teEncontro(frog) } )
 	
