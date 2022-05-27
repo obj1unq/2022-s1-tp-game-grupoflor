@@ -21,7 +21,7 @@ class Auto {
 	}
 	method verificarMoverse(){
 		return  self.position() == game.at(0,1)
-		
+		 
 	}
 
 }

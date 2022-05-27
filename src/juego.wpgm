@@ -12,7 +12,7 @@ program juego {
 	game.addVisualCharacter(frog)
 	
 	
-	game.onCollideDo(frog, { algo => algo.teEncontro(frog)  } )
+	game.onCollideDo(frog, { algo => algo.teEncontro(frog) } )
 	
 	
 	game.onTick(2500, 'auto', {generadorVehiculos.generarVehiculo(generadorAutos)})
@@ -21,7 +21,7 @@ program juego {
 
 	game.onTick(1500, 'auto', {generadorAutos.moverVehiculos()})
 	game.onTick(1000, 'autoCarrera', {generadorAutosCarreras.moverVehiculos()})
-	
+	   
 	//COMIENZA
 	game.start()
 }
