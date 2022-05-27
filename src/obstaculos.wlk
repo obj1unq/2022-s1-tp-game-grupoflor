@@ -7,33 +7,56 @@ class Auto {
 	var property position = game.at(9, 1)
 
 	method moverse() {
-		position = position.left(1)
+		if(not self.verificarMoverse()){
+			position = position.left(1)
+		}
+		else{
+			generadorAutos.removerVehiculo(self)
+			game.removeVisual(self)
+		}
 	}
 
 	method teEncontro(personaje) {
 		personaje.perder()
 	}
+	method verificarMoverse(){
+		return  self.position() == game.at(0,1)
+		
+	}
 
 }
 
-class AutoCarreras {
+class AutoCarrera {
 
 	const property image = 'car2.png'
 	var property position = game.at(0, 2)
 
 	method moverse() {
-		position = position.right(1)
+		
+		if(not self.verificarMoverse()){
+			position = position.right(1)
+		}
+		else{
+			generadorAutosCarreras.removerVehiculo(self)
+			game.removeVisual(self)
+		}
+		
 	}
 
 	method teEncontro(personaje) {
 		personaje.perder()
 	}
+	
+	method verificarMoverse(){
+		return  self.position() == game.at(9,2)
+		
+	}
+	
+	
 
 }
 
 object generadorVehiculos {
-
-	const property vehiculosGenerados = []
 
 	method generarVehiculo(constructor) {
 		const vehiculo = self.construirVehiculo(constructor)
@@ -45,35 +68,49 @@ object generadorVehiculos {
 		return constructor.construirVehiculo()
 	}
 	
-	/*
-	method construirAuto() {
-		return new Auto()
-	}
-	*/
+	
 
 }
 
 object generadorAutos {
 	const property vehiculosGenerados = []
 	
+	
 	method construirVehiculo() {
+		
 		return new Auto()
+		
 	}
 	
 	method agregarVehiculo(vehiculo){
 		vehiculosGenerados.add(vehiculo)
 	}
+	method moverVehiculos() {
+		vehiculosGenerados.forEach({vehiculo => vehiculo.moverse()})
+	}
+	
+	method removerVehiculo(vehiculo){
+		vehiculosGenerados.remove(vehiculo)
+	}
+	
+	
 }
 
 object generadorAutosCarreras {
 	const property vehiculosGenerados = []
 	
 	method construirVehiculo() {
-		return new AutoCarreras()
+		return new AutoCarrera()
 	}
 	
 	method agregarVehiculo(vehiculo){
 		vehiculosGenerados.add(vehiculo)
+	}
+	method moverVehiculos() {
+		vehiculosGenerados.forEach({vehiculo => vehiculo.moverse()})
+	}
+	method removerVehiculo(vehiculo){
+		vehiculosGenerados.remove(vehiculo)
 	}
 }
 
