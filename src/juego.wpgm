@@ -33,7 +33,8 @@ program juego {
 	game.onTick(500, 'Moto', {generadorMotos.moverVehiculos()})
 	
 	
-	game.onTick(2500, 'nenufar', {generadorFlotantes.generarFlotante(generadorNenufares)})
+	game.onTick(2500, 'nenufar', {generadorNenufares.generarNenufarSur()})
+	game.onTick(2500, 'nenufar', {generadorNenufares.generarNenufarNorte()})
 	
 //	game.onTick(1500, 'nenufar', {generadorNenufares.moverFlotantes()})   //
 	

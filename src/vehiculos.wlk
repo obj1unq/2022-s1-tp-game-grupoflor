@@ -2,12 +2,28 @@ import wollok.game.*
 import frog.*
 import extras.*
 
-class Auto {
+class Vehiculo{
+	var property position
+	
+	var property image
+	
+	method moverse() 
+	
+	method puedeMover()
+	
+	method teEncontro(personaje) {
+		personaje.perder()
+	}
+}
 
-	const property image = 'car1.png'
-	var property position = game.at(9, 1)
 
-	method moverse() {
+class AutoParticular inherits Vehiculo{
+	
+	override method puedeMover(){
+		return  self.position() == game.at(0,1)
+	}
+	
+	override method moverse() {
 		if(not self.puedeMover()){
 			position = position.left(1)
 		}
@@ -16,23 +32,13 @@ class Auto {
 			game.removeVisual(self)
 		}
 	}
-
-	method teEncontro(personaje) {
-		personaje.perder()
-	}
-	method puedeMover(){
-		return  self.position() == game.at(0,1)
-		 
-	}
+	
 
 }
 
-class AutoCarrera {
+class AutoCarrera inherits Vehiculo{
 
-	const property image = 'car2.png'
-	var property position = game.at(0, 2)
-
-	method moverse() {
+	override method moverse() {
 		
 		if(not self.puedeMover()){
 			position = position.right(1)
@@ -43,24 +49,16 @@ class AutoCarrera {
 		}
 		
 	}
-
-	method teEncontro(personaje) {
-		personaje.perder()
-	}
 	
-	method puedeMover(){
+	override method puedeMover(){
 		return  self.position() == game.at(9,2)
-		
 	}
 	
 }
 
-class AutoMilitar {
+class AutoMilitar inherits Vehiculo{
 	
-	const property image = 'car3.png'
-	var property position = game.at(8,3)
-	
-	method moverse() {
+	override method moverse() {
 		if(not self.puedeMover()){
 			position = position.left(1)
 		}
@@ -70,21 +68,14 @@ class AutoMilitar {
 		}
 	}
 
-	method teEncontro(personaje) {
-		personaje.perder()
-	}
-	
-	method puedeMover(){
+	override method puedeMover(){
 		return  self.position() == game.at(0,3)		 
 	}
 }
 
-class Moto {
+class Moto inherits Vehiculo{
 
-	const property image = 'colgando.png'
-	var property position = game.at(0, 4)
-
-	method moverse() {
+	override method moverse() {
 		
 		if(not self.puedeMover()){
 			position = position.right(1)
@@ -96,13 +87,8 @@ class Moto {
 		
 	}
 
-	method teEncontro(personaje) {
-		personaje.perder()
-	}
-	
-	method puedeMover(){
+	override method puedeMover(){
 		return  self.position() == game.at(9,4)
-		
 	}
 	
 }
@@ -127,7 +113,7 @@ object generadorAutos {
 	
 	method construirVehiculo() {
 		
-		return new Auto()
+		return new AutoParticular(image = 'car1.png', position = game.at(9, 1))
 		
 	}
 	
@@ -142,14 +128,14 @@ object generadorAutos {
 		vehiculosGenerados.remove(vehiculo)
 	}
 	
-	
 }
+
 
 object generadorAutosCarreras {
 	const property vehiculosGenerados = []
 	
 	method construirVehiculo() {
-		return new AutoCarrera()
+		return new AutoCarrera(image = 'car2.png', position = game.at(0, 2))
 	}
 	
 	method agregarVehiculo(vehiculo){
@@ -167,7 +153,7 @@ object generadorAutoMilitares{
 	const property vehiculosGenerados = []
 	
 	method construirVehiculo() {
-		return new AutoMilitar()
+		return new AutoMilitar(image = 'car3.png', position = game.at(8,3))
 	}
 	
 	method agregarVehiculo(vehiculo){
@@ -187,7 +173,7 @@ object generadorMotos{
 	const property vehiculosGenerados = []
 	
 	method construirVehiculo() {
-		return new Moto()
+		return new Moto(image = 'moto.png', position = game.at(0, 4))
 	}
 	
 	method agregarVehiculo(vehiculo){
