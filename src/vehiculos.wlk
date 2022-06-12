@@ -11,8 +11,8 @@ class Vehiculo{
 	
 	method puedeMover()
 	
-	method teEncontro(personaje) {
-		personaje.perder()
+	method teEncontro(frog) {
+		frog.colisionado()
 	}
 }
 
@@ -57,10 +57,15 @@ class AutoCarrera inherits Vehiculo{
 }
 
 class AutoMilitar inherits Vehiculo{
+	var property position = game.at(8,3)
+	
+	override method position(){
+		return game.at(8,3)
+	}
 	
 	override method moverse() {
 		if(not self.puedeMover()){
-			position = position.left(1)
+			self.position().left(1)
 		}
 		else{
 			generadorAutoMilitares.removerVehiculo(self)
@@ -71,7 +76,65 @@ class AutoMilitar inherits Vehiculo{
 	override method puedeMover(){
 		return  self.position() == game.at(0,3)		 
 	}
+	
+	
+	method disparar(){
+		const bala = generadorBalas.construirBala(self.position())
+		game.addVisual(bala)		
+	}
+	
 }
+
+class Bala{
+	var property image = 'bala.png'
+	var property position
+	
+	method moverse(){
+		if(not self.puedeMover()){
+			position = position.left(1)
+		}
+		else{
+			generadorBalas.removerBala(self)
+			game.removeVisual(self)
+		}
+	}
+	
+	method puedeMover(){
+		return  self.position() == game.at(0,3)		 
+	}
+	
+	method teEncontro(frog){
+		frog.colisionado()
+		game.removeVisual(self)
+	}
+}
+
+object generadorBalas{
+	const balasDisparadas = []
+	
+	method removerBala(bala){
+		balasDisparadas.remove(bala)
+	}
+	
+	method agregarBala(bala){
+		balasDisparadas.add(bala)
+	}
+	
+	method moverBalas() {
+		balasDisparadas.forEach({bala => bala.moverse()})
+	}
+	
+	method construirBala(posicionVehiculo){
+		var bala = new Bala(position = game.at(posicionVehiculo.x() - 1, posicionVehiculo.y()))
+		balasDisparadas.add(bala)
+		return bala
+//		new Bala(position = game.at(8,3))
+//		return new Bala(position = game.at(posicionVehiculo.x() - 1, posicionVehiculo.y()))
+//		return new Bala(position = posicionVehiculo.x() - 1, posicionVehiculo.y())
+	}
+}
+
+
 
 class Moto inherits Vehiculo{
 
@@ -120,6 +183,7 @@ object generadorAutos {
 	method agregarVehiculo(vehiculo){
 		vehiculosGenerados.add(vehiculo)
 	}
+	
 	method moverVehiculos() {
 		vehiculosGenerados.forEach({vehiculo => vehiculo.moverse()})
 	}
@@ -164,9 +228,15 @@ object generadorAutoMilitares{
 		vehiculosGenerados.forEach({vehiculo => vehiculo.moverse()})
 	}
 	
+	method dispararTanques(){
+		vehiculosGenerados.forEach({vehiculo => vehiculo.disparar()})
+	}
+	
 	method removerVehiculo(vehiculo){
 		vehiculosGenerados.remove(vehiculo)
 	}
+	
+	
 }
 
 object generadorMotos{

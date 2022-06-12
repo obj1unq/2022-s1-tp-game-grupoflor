@@ -26,6 +26,11 @@ object generadorNenufares {
 	const property nenufaresGeneradosSur = []
 	const property nenufaresGeneradosNorte = []
 	
+	method generarNenufares(){
+		self.generarNenufarSur()
+		self.generarNenufarNorte()
+	}
+	
 	method generarNenufarSur() {
 		if(nenufaresGeneradosSur.size() < 3){
 			const nenufar = self.construirNenufarSur()
@@ -58,6 +63,71 @@ object generadorNenufares {
 	}
 }
 
+
+object ovni{
+	const property image = 'ovni.png'
+	const objetivo = frog
+	var property position = game.at(11, 0)
+		
+	method teEncontro(frog){
+		frog.colisionado()
+		game.removeVisual(self)
+	}
+	
+	method moverse(){
+		
+		var otroPosicion = frog.position()
+		var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
+		var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else 0
+		if (self.position() != otroPosicion){
+			newX = newX.max(0).min(game.width() - 1)
+			newY = newY.max(0).min(game.height() - 1)
+			position = game.at(newX, newY)
+		}
+		else self.teEncontro(frog)
+		
+	}
+}
+
+object anunciador{
+	var property position = game.at(-1, -1)
+	const property image = 'car1.png'
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//class Tronco inherits Flotante{
+//	method puedeMover(){
+//		return  self.position() == game.at(10,7)
+//	}
+//	
+//	method moverseEste() {
+//		if(not self.puedeMover()){
+//			position = position.left(1)
+//		}
+//		else{
+//			generadorTroncos.removerTronco(self)
+//			game.removeVisual(self)
+//		}
+//	}
+//}
+//
+//object generadorTroncos(){
+//	
+//}
 
 /* 
 object generadorFlotantes {

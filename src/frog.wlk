@@ -1,15 +1,18 @@
 import wollok.game.*
 import vehiculos.*
+import extras.*
 
 object frog {
 	var property position = game.at(5,0)
 	var property image = "frogUP.png"	
-	
+	var property vidas = 3
+	var property puntaje = 0
 	
 	method image(direccion){
 		return 'frog' + direccion.image() + '.png'
 		
 	}
+	
 	method ganar() {
 		self.terminar("Gané!")		
 	}
@@ -34,7 +37,25 @@ object frog {
             image = "frogDown.png"
         }
     }
-
+    
+    method colisionado(){
+    	if(vidas == 0){
+			self.perder()	
+		}
+		else{
+			vidas-= 1
+			self.volverInicio()
+			game.say(anunciador, 'Te quedan ' + vidas + 'vidas')
+		}
+    }
+    
+    method volverInicio(){
+    	position = game.at(5,0)
+    }
+	
+	method decirPuntajeYVidas(){
+		 game.say(self, "Tengo " + vidas + ' vidas y ' + puntaje + ' puntos') 
+	}
 }
 
 
