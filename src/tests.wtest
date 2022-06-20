@@ -1,6 +1,43 @@
+import wollok.game.*
+import frog.*
+import vehiculos.*
+import extras.*
 
-test "testX" {
-
-	assert.that(true)
+describe 'tests'{
+	const autoNormal = new AutoParticular(image = 'car1.png', position = game.at(0,0))
+	const bala = new Bala(position = game.at(1,0))
+	
+	method initialize(){
+		game.clear()
+		game.addVisual(frog)
+		game.addVisual(anunciador)
+		game.addVisual(ovni)
+		game.addVisual(bala)
+	}
+	
+	test 'frog choca con un autoNormal, pierde una vida y vuelve al inicio'{
+		assert.equals(3, frog.vidas())
+		autoNormal.teEncontro(frog)
+		assert.equals(2, frog.vidas())
+		assert.equals(game.at(5,0), frog.position())
+	}
+	
+	test 'frog choca con un ovni pierde vida y resetea posicion'{
+		assert.equals(3, frog.vidas())
+		ovni.teEncontro(frog)
+		assert.equals(2, frog.vidas())
+		assert.equals(game.at(5,0), frog.position())
+	}
+	
+	test 'frog recibe una bala y pierde vida y reseta posicion'{
+		assert.equals(3, frog.vidas())
+		bala.teEncontro(frog)
+		assert.equals(2, frog.vidas())
+		assert.equals(game.at(5,0), frog.position())
+	}
+	
+//	test 'frog se cae al agua luego de que se mueve el tronco'{
+//		
+//	}
 
 }

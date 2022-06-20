@@ -7,6 +7,7 @@ object frog {
 	var property image = "frogUP.png"	
 	var property vidas = 3
 	var property puntaje = 0
+	var property cantidadLlegadas = 0
 	
 	method image(direccion){
 		return 'frog' + direccion.image() + '.png'
@@ -50,12 +51,26 @@ object frog {
     }
     
     method volverInicio(){
-    	position = game.at(5,0)
+    	position = game.at(8,0)
     }
 	
-	method decirPuntajeYVidas(){
-		 game.say(self, "Tengo " + vidas + ' vidas y ' + puntaje + ' puntos') 
+	method agregarPuntaje(numero){
+		const puntajeNuevo = puntaje + numero
+		if (puntajeNuevo >= 100){
+			puntaje = 0
+			vidas = vidas + 1
+		}
+		else puntaje = puntajeNuevo
 	}
+	
+	method sumarLlegada(){
+		if (cantidadLlegadas < 2){
+			cantidadLlegadas = cantidadLlegadas + 1
+			self.volverInicio()
+		}
+		else{self.ganar()} 
+	}
+
 }
 
 

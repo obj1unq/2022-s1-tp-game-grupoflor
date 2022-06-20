@@ -56,33 +56,50 @@ class AutoCarrera inherits Vehiculo{
 	
 }
 
-class AutoMilitar inherits Vehiculo{
-	var property position = game.at(8,3)
+//class AutoMilitar inherits Vehiculo{
 	
-	override method position(){
-		return game.at(8,3)
-	}
+//	override method image(){
+//		return 'car3.png'
+//	}
+//	
+//	override method position(){
+//		return game.at(8,3)
+//	}
 	
-	override method moverse() {
-		if(not self.puedeMover()){
-			self.position().left(1)
-		}
-		else{
-			generadorAutoMilitares.removerVehiculo(self)
-			game.removeVisual(self)
-		}
-	}
+//	override method moverse() {
+//		if(not self.puedeMover()){
+//			self.position().left(1)
+//		}
+//		else{
+//			generadorAutoMilitares.removerVehiculo(self)
+//			game.removeVisual(self)
+//		}
+//	}
 
-	override method puedeMover(){
-		return  self.position() == game.at(0,3)		 
-	}
+//	override method puedeMover(){
+//		return  self.position() == game.at(0,3)		 
+//	}
 	
+	
+//	method disparar(){
+//		const bala = generadorBalas.construirBala(self.position())
+//		game.addVisual(bala)		
+//	}
+//	
+//}
+
+object tanque{
+	var property image = 'car3.png'
+	var property position = game.at(8,3)
 	
 	method disparar(){
 		const bala = generadorBalas.construirBala(self.position())
 		game.addVisual(bala)		
 	}
 	
+	method teEncontro(frog) {
+		frog.colisionado()
+	}
 }
 
 class Bala{
@@ -105,6 +122,7 @@ class Bala{
 	
 	method teEncontro(frog){
 		frog.colisionado()
+		generadorBalas.removerBala(self)
 		game.removeVisual(self)
 	}
 }
@@ -116,6 +134,7 @@ object generadorBalas{
 		balasDisparadas.remove(bala)
 	}
 	
+	
 	method agregarBala(bala){
 		balasDisparadas.add(bala)
 	}
@@ -125,7 +144,7 @@ object generadorBalas{
 	}
 	
 	method construirBala(posicionVehiculo){
-		var bala = new Bala(position = game.at(posicionVehiculo.x() - 1, posicionVehiculo.y()))
+		const bala = new Bala(position = game.at(posicionVehiculo.x() - 1, posicionVehiculo.y()))
 		balasDisparadas.add(bala)
 		return bala
 //		new Bala(position = game.at(8,3))
@@ -213,31 +232,31 @@ object generadorAutosCarreras {
 	}
 }
 
-object generadorAutoMilitares{
-	const property vehiculosGenerados = []
-	
-	method construirVehiculo() {
-		return new AutoMilitar(image = 'car3.png', position = game.at(8,3))
-	}
-	
-	method agregarVehiculo(vehiculo){
-		vehiculosGenerados.add(vehiculo)
-	}
-	
-	method moverVehiculos() {
-		vehiculosGenerados.forEach({vehiculo => vehiculo.moverse()})
-	}
-	
-	method dispararTanques(){
-		vehiculosGenerados.forEach({vehiculo => vehiculo.disparar()})
-	}
-	
-	method removerVehiculo(vehiculo){
-		vehiculosGenerados.remove(vehiculo)
-	}
-	
-	
-}
+//object generadorAutoMilitares{
+//	const property vehiculosGenerados = []
+//	
+//	method construirVehiculo() {
+//		return new AutoMilitar(image = 'car3.png', position = game.at(8,3))
+//	}
+//	
+//	method agregarVehiculo(vehiculo){
+//		vehiculosGenerados.add(vehiculo)
+//	}
+//	
+//	method moverVehiculos() {
+//		vehiculosGenerados.forEach({vehiculo => vehiculo.moverse()})
+//	}
+//	
+//	method dispararTanques(){
+//		vehiculosGenerados.forEach({vehiculo => vehiculo.disparar()})
+//	}
+//	
+//	method removerVehiculo(vehiculo){
+//		vehiculosGenerados.remove(vehiculo)
+//	}
+//	
+//	
+//}
 
 object generadorMotos{
 	const property vehiculosGenerados = []
