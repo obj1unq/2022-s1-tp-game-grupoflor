@@ -8,61 +8,36 @@ class Flotante{
 	var property position 
 }
 
+
 object generadorTroncos{
 	
-	const property troncosGeneradosSur = []
-	const property troncosGeneradosNorte = []
+	const property troncosGenerados = []
 	
-	method generarTroncos(numero){
-		self.generarTroncoSur(numero)
-		self.generarTroncoNorte(numero)
+	
+	method construirTronco(posicionInicialTronco){
+		const posicionInicial = posicionInicialTronco
+		const tronco1 = new Tronco(image = 'trunk' + 3 + '.png', position = posicionInicial)
+		const tronco2 = new Tronco(image = 'trunk' + 2 + '.png', position = posicionInicial.left(1))
+		const tronco3 = new Tronco(image = 'trunk' + 1 + '.png', position = posicionInicial.left(2))
+		troncosGenerados.add(tronco1)
+		troncosGenerados.add(tronco2)
+		troncosGenerados.add(tronco3)
+		game.addVisual(tronco1)
+		game.addVisual(tronco2)
+		game.addVisual(tronco3)
 	}
 	
-	method generarTroncoSur(numero){
-		const tronco = self.construirTroncoSur(numero)
-		troncosGeneradosSur.add(tronco)
-		game.addVisual(tronco)
-	}
-	
-	method generarTroncoNorte(numero){
-		const tronco = self.construirTroncoNorte(numero)
-		troncosGeneradosNorte.add(tronco)
-		game.addVisual(tronco)
-	}
-	
-	method construirTroncoSur(numero){
-		return new Tronco(image = 'trunk' + numero + '.png', position = game.at(0,7))
-	}
-	
-	method construirTroncoNorte(numero){
-		return new Tronco(image = 'trunk' + numero + '.png', position = game.at(0,9))
-	}
-	
-//	method moverTroncos(direccion1, direccion2){
-//		troncosGeneradosSur.forEach({tronco => tronco.moverse(direccion1)})
-//		troncosGeneradosNorte.forEach({tronco => tronco.moverse(direccion2)})
-//	}
 	
 	method moverTroncos(){
-		troncosGeneradosSur.forEach({tronco => tronco.moverse()})
-		troncosGeneradosNorte.forEach({tronco => tronco.moverse()})
+		troncosGenerados.forEach({tronco => tronco.moverse()})
 	}
-	
-//	method removerTroncoSur(tronco){
-//		troncosGeneradosSur.remove(tronco)
-//	}
-//	
-//	method removerTroncoNorte(tronco){
-//		troncosGeneradosNorte.remove(tronco)
-//	}
 	
 	method removerTronco(tronco){
-		if(troncosGeneradosSur.contains(tronco)){
-			troncosGeneradosSur.remove(tronco)
-		}
-		else troncosGeneradosNorte.remove(tronco)
+		troncosGenerados.remove(tronco)
 	}
+	
 }
+
 
 class Tronco inherits Flotante{
 	
@@ -73,7 +48,6 @@ class Tronco inherits Flotante{
 		}
 		else{
 			generadorTroncos.removerTronco(self)
-			game.removeVisual(self)
 		}
 		
 	}
@@ -121,6 +95,13 @@ object generadorNenufares {
 	method generarNenufares(){
 		self.generarNenufarSur()
 		self.generarNenufarNorte()
+		self.reiniciarObjeto(ovni)
+		self.reiniciarObjeto(frog)
+	}
+	
+	method reiniciarObjeto(objeto){
+		game.removeVisual(objeto)
+		game.addVisual(objeto)
 	}
 	
 	method generarNenufarSur() {
@@ -159,25 +140,25 @@ object generadorNenufares {
 object ovni{
 	const property image = 'ovni.png'
 	const objetivo = frog
-	var property position = game.at(11, 0)
+	var property position = game.at(0, 0)
 		
 	method teEncontro(frog){
 		frog.colisionado()
-		game.removeVisual(self)
+		position = game.at(0, 0)
 	}
 	
 	method moverse(){
-		
-		var otroPosicion = frog.position()
-		var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
-		var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else 0
-		if (self.position() != otroPosicion){
+		if (frog.cantidadLlegadas() > 1){
+			var otroPosicion = frog.position()
+			var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
+			var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else 0
+			if (self.position() != otroPosicion){
 			newX = newX.max(0).min(game.width() - 1)
 			newY = newY.max(0).min(game.height() - 1)
 			position = game.at(newX, newY)
 		}
 		else self.teEncontro(frog)
-		
+		}
 	}
 }
 
@@ -215,7 +196,7 @@ object generadorFrutas{
 	const property frutasGeneradas = []
 	
 	method generarFruta(){
-		if(frutasGeneradas.size() < 3){
+		if(frutasGeneradas.size() < 2){
 			const fruta = self.construirFruta()
 			frutasGeneradas.add(fruta)
 			game.addVisual(fruta)
@@ -236,7 +217,7 @@ class Fruta{
 	var property position
 	
 	method teEncontro(frog){
-		frog.agregarPuntaje(50)
+		frog.agregarPuntaje(25)
 		generadorFrutas.removerFruta(self)
 		game.removeVisual(self)
 		anunciador.decirPuntajeYVidas(frog)
@@ -247,8 +228,10 @@ object generadorAlcantarillas{
 	method generarAlcantarillas(){
 		const alcantarilla1 = new Alcantarilla(position = game.at(8,0))
 		const alcantarilla2 = new Alcantarilla(position = randomizer.emptyPosition())
+//		const alcantarilla3 = new Alcantarilla(position = randomizer.emptyPosition())
 		game.addVisual(alcantarilla1)
 		game.addVisual(alcantarilla2)
+//		game.addVisual(alcantarilla3)
 	}
 }
 
@@ -264,9 +247,9 @@ class Alcantarilla{
 
 object generadorMeta {
 	method generarMeta(){
-		const meta1 = new Meta(position = game.at(2, 10))
-		const meta2 = new Meta(position = game.at(5, 10))
-		const meta3 = new Meta(position = game.at(8, 10))
+		const meta1 = new Meta(position = game.at(1, 10))
+		const meta2 = new Meta(position = game.at(4, 10))
+		const meta3 = new Meta(position = game.at(7, 10))
 		game.addVisual(meta1)
 		game.addVisual(meta2)
 		game.addVisual(meta3)

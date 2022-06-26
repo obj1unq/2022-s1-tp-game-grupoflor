@@ -12,19 +12,6 @@ program juego {
 	game.cellSize(55)
 	game.boardGround('background2.jpg')
 	
-	game.addVisual(ovni)
-	game.addVisualCharacter(frog)
-	game.addVisual(anunciador)
-	game.addVisual(tanque)
-	
-	
-	keyboard.left().onPressDo( { frog.mover(izquierda) } )
-	keyboard.right().onPressDo( { frog.mover(derecha) } )
-	keyboard.up().onPressDo( { frog.mover(arriba) } )
-	keyboard.down().onPressDo( { frog.mover(abajo) } )
-	keyboard.space().onPressDo { anunciador.decirPuntajeYVidas(frog) }
-	
-	game.onCollideDo(frog, { algo => algo.teEncontro(frog) } )
 	
 	generadorAlcantarillas.generarAlcantarillas()
 	generadorMeta.generarMeta()
@@ -45,21 +32,32 @@ program juego {
 	game.onTick(3000, 'disparar', {tanque.disparar()})
 	game.onTick(1000, 'bala', {generadorBalas.moverBalas()})
 	
-//	game.onTick(1000, 'ovni', {ovni.moverse()})
+	game.onTick(1000, 'ovni', {ovni.moverse()})
 	
 	game.onTick(2500, 'nenufar', {generadorNenufares.generarNenufares()})
 
-	game.onTick(5500, 'tronco1', {generadorTroncos.generarTroncos(3)})
-	game.onTick(6000, 'tronco2', {generadorTroncos.generarTroncos(2)})
-	game.onTick(6500, 'tronco3', {generadorTroncos.generarTroncos(1)})
 	
-	game.onTick(500, 'moverTroncos', {generadorTroncos.moverTroncos()})
-	game.onTick(500, 'moverTroncos', {generadorTroncos.moverTroncos()})
-	
-	
-	game.onTick(500, 'frutas', {generadorFrutas.generarFruta()})
+//	game.onTick(8000, 'generarTroncos', {generadorTroncos.generarTroncos()})
+	game.onTick(8000, 'generarTroncosSur', {generadorTroncos.construirTronco(game.at(0,7))})
+	game.onTick(10000, 'generarTroncosNorte', {generadorTroncos.construirTronco(game.at(0,9))})
+	game.onTick(1000, 'moverTroncos', {generadorTroncos.moverTroncos()})
 	
 	
+	game.onTick(2000, 'frutas', {generadorFrutas.generarFruta()})
+	
+	game.addVisual(ovni)
+	game.addVisual(anunciador)
+	game.addVisual(tanque)
+	game.addVisual(frog)
+	
+	game.onCollideDo(frog, { algo => algo.teEncontro(frog) } )
+	
+	keyboard.left().onPressDo( { frog.mover(izquierda) } )
+	keyboard.right().onPressDo( { frog.mover(derecha) } )
+	keyboard.up().onPressDo( { frog.mover(arriba) } )
+	keyboard.down().onPressDo( { frog.mover(abajo) } )
+	keyboard.v().onPressDo { anunciador.decirPuntajeYVidas(frog) }
+	keyboard.space().onPressDo( { frog.saltar() } )
 	
 	//COMIENZA
 	game.start()

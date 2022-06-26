@@ -8,10 +8,23 @@ object frog {
 	var property vidas = 3
 	var property puntaje = 0
 	var property cantidadLlegadas = 0
+	var property saltoDisponible = true
 	
-	method image(direccion){
-		return 'frog' + direccion.image() + '.png'
-		
+//	method image(direccion){
+//		return 'frog' + direccion.subfijo() + '.png'
+//		
+//	}
+
+	method saltar(){
+		self.validarSaltar()
+		saltoDisponible = false
+		position = position.up(2)
+	}
+	
+	method validarSaltar(){
+		if (!saltoDisponible){
+			self.error('no me quedan energias para saltar')
+		}
 	}
 	
 	method ganar() {
@@ -27,17 +40,34 @@ object frog {
 		game.schedule(1000, {game.stop()})
 	}
 
+//	method mover(direccion) {
+//        if (direccion == arriba.direccion()) {
+//        	position = direccion.siguiente()
+//            image = "frogUP.png"
+//        } else if (direccion == izquierda.direccion()) {
+//            image = "frogLeft.png"
+//        } else if (direccion == derecha.direccion()) {
+//            image = "frogRight.png"
+//        } else {
+//            image = "frogDown.png"
+//        }
+//    }
+
 	method mover(direccion) {
-        if (direccion == arriba.direccion()) {
-            image = "frogUP.png"
-        } else if (direccion == izquierda.direccion()) {
-            image = "frogLeft.png"
-        } else if (direccion == derecha.direccion()) {
-            image = "frogRight.png"
-        } else {
-            image = "frogDown.png"
+        const aDondeVoy = direccion.siguiente(position)
+        if(self.destinoValido(aDondeVoy)) {
+            self.position(aDondeVoy)
+            self.cambiarImagen(direccion)
         }
     }
+    
+    method cambiarImagen(direccion){
+    	image = 'frog' + direccion.subfijo() + '.png'
+    }
+    
+//    method mirarHacia(direccion){
+//    	return 'frog' + direccion + '.png'
+//    }
     
     method colisionado(){
     	if(vidas == 0){
@@ -67,9 +97,21 @@ object frog {
 		if (cantidadLlegadas < 2){
 			cantidadLlegadas = cantidadLlegadas + 1
 			self.volverInicio()
+			saltoDisponible = true
 		}
 		else{self.ganar()} 
 	}
+	
+	method destinoValido(destino) {
+        return destino.x().between(0, game.width() - 1) and
+               destino.y().between(0, game.height() -1)
+    }
+    
+    method validarDestino(destino) {
+        if(not self.destinoValido(destino)) {
+            self.error("destino invalido")
+        }        
+    }
 
 }
 
@@ -85,6 +127,10 @@ object derecha {
     method direccion() {
         return self
     }
+    
+    method subfijo(){
+    	return 'Right'
+    }
 
 }
 
@@ -97,7 +143,10 @@ object izquierda {
     method direccion() {
         return self
     }
-
+	
+	method subfijo(){
+    	return 'Left'
+    }
 }
 
 object arriba {
@@ -108,6 +157,10 @@ object arriba {
 
     method direccion() {
         return self
+    }
+    
+    method subfijo(){
+    	return 'UP'
     }
 
 }
@@ -120,6 +173,10 @@ object abajo {
 
     method direccion() {
         return self
+    }
+    
+    method subfijo(){
+    	return 'Down'
     }
 
 }

@@ -89,7 +89,7 @@ class AutoCarrera inherits Vehiculo{
 //}
 
 object tanque{
-	var property image = 'car3.png'
+	var property image = 'tanque.png'
 	var property position = game.at(8,3)
 	
 	method disparar(){
