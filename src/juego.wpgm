@@ -45,6 +45,8 @@ program juego {
 	
 	game.onTick(2000, 'frutas', {generadorFrutas.generarFruta()})
 	
+	game.onTick(500, 'posicion', {frog.validarPosicion()})
+	
 	game.addVisual(ovni)
 	game.addVisual(anunciador)
 	game.addVisual(tanque)
@@ -57,6 +59,7 @@ program juego {
 	keyboard.up().onPressDo( { frog.mover(arriba) } )
 	keyboard.down().onPressDo( { frog.mover(abajo) } )
 	keyboard.v().onPressDo { anunciador.decirPuntajeYVidas(frog) }
+	
 	keyboard.space().onPressDo( { frog.saltar() } )
 	
 	//COMIENZA

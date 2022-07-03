@@ -54,7 +54,7 @@ object frog {
 //    }
 
 	method mover(direccion) {
-        const aDondeVoy = direccion.siguiente(position)
+        const aDondeVoy = direccion.siguiente(position)  
         if(self.destinoValido(aDondeVoy)) {
             self.position(aDondeVoy)
             self.cambiarImagen(direccion)
@@ -81,7 +81,7 @@ object frog {
     }
     
     method volverInicio(){
-    	position = game.at(8,0)
+    	position = game.at(7,0)
     }
 	
 	method agregarPuntaje(numero){
@@ -104,13 +104,23 @@ object frog {
 	
 	method destinoValido(destino) {
         return destino.x().between(0, game.width() - 1) and
-               destino.y().between(0, game.height() -1)
+               destino.y().between(0, game.height() - 1)
     }
     
     method validarDestino(destino) {
         if(not self.destinoValido(destino)) {
             self.error("destino invalido")
         }        
+    }
+    
+    method validarPosicion(){
+    	if (self.muere()){
+    		self.colisionado()
+    	}
+    }
+    
+    method muere(){
+    	return agua.estaEnAgua(position) and  !generadorTroncos.estaEnTronco(position) and !generadorNenufares.estaEnNenufar(position)
     }
 
 }

@@ -5,7 +5,11 @@ import randomizer.*
 
 class Flotante{
 	const property image
-	var property position 
+	var property position
+	
+	method mismaPosicion(posicion){
+		return position == posicion
+	}
 }
 
 
@@ -36,10 +40,14 @@ object generadorTroncos{
 		troncosGenerados.remove(tronco)
 	}
 	
+	method estaEnTronco(posicion){
+		return troncosGenerados.any({tronco => tronco.mismaPosicion(posicion)})
+	}
 }
 
 
 class Tronco inherits Flotante{
+	
 	
 	method moverse() {
 		
@@ -134,6 +142,13 @@ object generadorNenufares {
 		}
 		else nenufaresGeneradosNorte.remove(nenufar)
 	}
+	
+	method estaEnNenufar(posicion){
+		return nenufaresGeneradosSur.any({nenufar => nenufar.mismaPosicion(posicion)})
+			   or
+			   nenufaresGeneradosNorte.any({nenufar => nenufar.mismaPosicion(posicion)})
+		
+	}
 }
 
 
@@ -142,9 +157,12 @@ object ovni{
 	const objetivo = frog
 	var property position = game.at(0, 0)
 		
-	method teEncontro(frog){
-		frog.colisionado()
+	method teEncontro(personaje){
+		if (personaje.cantidadLlegadas() > 1){
+		personaje.colisionado()
 		position = game.at(0, 0)
+		}
+		else game.say(self, 'Me estoy preparando')
 	}
 	
 	method moverse(){
@@ -163,7 +181,7 @@ object ovni{
 }
 
 object anunciador{
-	var property position = game.at(-1, -1)
+	var property position = game.at(0, -1)
 	const property image = 'car1.png'
 	
 	method decirPuntajeYVidas(rana){
@@ -188,6 +206,14 @@ class Agua{
 	method teEncontro(frog){
 		frog.colisionado()
 	}
+}
+
+object agua{
+	
+	method estaEnAgua(rana){
+		return rana.x().between(0, game.width() - 1) and rana.y().between(6,9)
+	}
+	
 }
 
 
