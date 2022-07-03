@@ -1,13 +1,82 @@
 import wollok.game.*
+import frog.*
+import vehiculos.*
+import extras.*
 
 object presentacion { 
 	
 	method iniciar(){
-		game.boardGround("Fondo/fondo3.png")
+		game.boardGround("background2.jpg")
+		config.configurarTeclas()
+
 	}
-	
 }
 
+
+
 object juego {
+	method iniciar(){
+			//CONFIG
+//	game.title("Frogger")
+//	game.height(11)
+//	game.width(9)
+//	game.cellSize(55)
 	
+	
+	
+	generadorAlcantarillas.generarAlcantarillas()
+	generadorMeta.generarMeta()
+	
+//	game.onTick(2500, 'auto', {generadorVehiculos.generarVehiculos()})
+	
+	game.onTick(5000, 'auto', {generadorVehiculos.generarVehiculo(generadorAutos)})
+	game.onTick(4000, 'autoCarrera', {generadorVehiculos.generarVehiculo(generadorAutosCarreras)})
+//	game.onTick(8000, 'tanque', {generadorVehiculos.generarVehiculo(generadorAutoMilitares)})
+	game.onTick(3800, 'moto', {generadorVehiculos.generarVehiculo(generadorMotos)})
+
+   
+	game.onTick(1500, 'auto', {generadorAutos.moverVehiculos()})
+	game.onTick(1000, 'autoCarrera', {generadorAutosCarreras.moverVehiculos()})
+//	game.onTick(4000, 'Tanque', {generadorAutoMilitares.moverVehiculos()})
+	game.onTick(500, 'Moto', {generadorMotos.moverVehiculos()})
+	
+	game.onTick(3000, 'disparar', {tanque.disparar()})
+	game.onTick(1000, 'bala', {generadorBalas.moverBalas()})
+	
+	game.onTick(1000, 'ovni', {ovni.moverse()})
+	
+	game.onTick(2500, 'nenufar', {generadorNenufares.generarNenufares()})
+
+	
+//	game.onTick(8000, 'generarTroncos', {generadorTroncos.generarTroncos()})
+	game.onTick(8000, 'generarTroncosSur', {generadorTroncos.construirTronco(game.at(0,7))})
+	game.onTick(10000, 'generarTroncosNorte', {generadorTroncos.construirTronco(game.at(0,9))})
+	game.onTick(1000, 'moverTroncos', {generadorTroncos.moverTroncos()})
+	
+	
+	game.onTick(2000, 'frutas', {generadorFrutas.generarFruta()})
+	
+	game.onTick(500, 'posicion', {frog.validarPosicion()})
+	
+	game.addVisual(ovni)
+	game.addVisual(anunciador)
+	game.addVisual(tanque)
+	game.addVisual(frog)
+	
+	game.onCollideDo(frog, { algo => algo.teEncontro(frog) } )
+	}
+}
+
+object config {
+	
+	method configurarTeclas(){
+		keyboard.left().onPressDo( { frog.mover(izquierda) } )
+		keyboard.right().onPressDo( { frog.mover(derecha) } )
+		keyboard.up().onPressDo( { frog.mover(arriba) } )
+		keyboard.down().onPressDo( { frog.mover(abajo) } )
+		keyboard.v().onPressDo( { anunciador.decirPuntajeYVidas(frog) } )
+		keyboard.space().onPressDo( { frog.saltar() } )
+		keyboard.enter().onPressDo( {presentacion.iniciarJuego()} )
+	}
+
 }
