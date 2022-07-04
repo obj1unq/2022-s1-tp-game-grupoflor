@@ -76,7 +76,7 @@ object config {
 		keyboard.down().onPressDo( { frog.mover(abajo) } )
 		keyboard.v().onPressDo( { anunciador.decirPuntajeYVidas(frog) } )
 		keyboard.space().onPressDo( { frog.saltar() } )
-		keyboard.enter().onPressDo( {presentacion.iniciarJuego()} )
+		keyboard.enter().onPressDo( {juego.iniciar()} )
 	}
 
 }
