@@ -8,21 +8,20 @@ object presentacion {
 	method iniciar(){
 		game.boardGround("background2.jpg")
 		config.configurarTeclas()
-
+		game.addVisual(pantallaCarga)
 	}
 }
 
+object pantallaCarga{
+	const position = game.origin()
+	const image = 'froggerfachero.jpg' 
+}
 
 
 object juego {
 	method iniciar(){
-			//CONFIG
-//	game.title("Frogger")
-//	game.height(11)
-//	game.width(9)
-//	game.cellSize(55)
 	
-	
+	game.removeVisual(pantallaCarga)
 	
 	generadorAlcantarillas.generarAlcantarillas()
 	generadorMeta.generarMeta()
