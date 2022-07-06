@@ -94,7 +94,7 @@ object reproductor {
 		musica.shouldLoop(true)
 		keyboard.w().onPressDo({musica.volume(1)})
 		keyboard.s().onPressDo({musica.volume(0.5)})
-		keyboard.m().onPressDo({musica.volume(0)})
+		keyboard.m().onPressDo({musica.volume(0)})78
 		game.schedule(500, { musica.play()} )
 	}
 }
