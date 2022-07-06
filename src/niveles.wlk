@@ -6,23 +6,28 @@ import extras.*
 object presentacion { 
 	
 	method iniciar(){
-		game.boardGround("background2.jpg")
-		config.configurarTeclas()
+
 		game.addVisual(pantallaCarga)
+		config.configurarTeclas()
+
 	}
 }
 
 object pantallaCarga{
-	const position = game.origin()
-	const image = 'froggerfachero.jpg' 
+	
+	const property image = "froggerfachero.jpg"
+	const property position = game.origin()
+	
 }
+
 
 
 object juego {
 	method iniciar(){
 	
-	game.removeVisual(pantallaCarga)
+	reproductor.iniciarMusica()
 	
+	game.removeVisual(pantallaCarga)
 	generadorAlcantarillas.generarAlcantarillas()
 	generadorMeta.generarMeta()
 	
@@ -63,6 +68,9 @@ object juego {
 	game.addVisual(frog)
 	
 	game.onCollideDo(frog, { algo => algo.teEncontro(frog) } )
+	
+	frog.liberarMovimiento()
+	
 	}
 }
 
@@ -78,4 +86,15 @@ object config {
 		keyboard.enter().onPressDo( {juego.iniciar()} )
 	}
 
+}
+
+object reproductor {
+	method iniciarMusica(){
+		const musica = game.sound("musicafrog.mp3")
+		musica.shouldLoop(true)
+		keyboard.w().onPressDo({musica.volume(1)})
+		keyboard.s().onPressDo({musica.volume(0.5)})
+		keyboard.m().onPressDo({musica.volume(0)})
+		game.schedule(500, { musica.play()} )
+	}
 }

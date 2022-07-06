@@ -9,6 +9,7 @@ object frog {
 	var property puntaje = 0
 	var property cantidadLlegadas = 0
 	var property saltoDisponible = true
+	var property puedeMover = false
 	
 //	method image(direccion){
 //		return 'frog' + direccion.subfijo() + '.png'
@@ -54,7 +55,8 @@ object frog {
 //    }
 
 	method mover(direccion) {
-        const aDondeVoy = direccion.siguiente(position)  
+        const aDondeVoy = direccion.siguiente(position)
+        self.validarInicio()  
         if(self.destinoValido(aDondeVoy)) {
             self.position(aDondeVoy)
             self.cambiarImagen(direccion)
@@ -104,7 +106,11 @@ object frog {
 	
 	method destinoValido(destino) {
         return destino.x().between(0, game.width() - 1) and
-               destino.y().between(0, game.height() - 1)
+               (destino.y().between(0, game.height() - 2) or self.destinosMetas(destino))
+    }
+    
+    method destinosMetas(destino){
+    	return destino == game.at(1, 10) or destino == game.at(4, 10) or destino == game.at(7, 10)
     }
     
     method validarDestino(destino) {
@@ -121,6 +127,21 @@ object frog {
     
     method muere(){
     	return agua.estaEnAgua(position) and  !generadorTroncos.estaEnTronco(position) and !generadorNenufares.estaEnNenufar(position)
+    }
+    
+    method liberarMovimiento(){
+    	game.schedule(7000, {self.liberarRana()})
+    }
+    
+    method liberarRana(){
+    	puedeMover = true
+    	game.say(self, 'Ahora si me puedo mover :D')
+    }
+    
+    method validarInicio(){
+    	if (! puedeMover){
+    		game.error('Estoy entrando en calor')
+    	}
     }
 
 }
