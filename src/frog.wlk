@@ -80,7 +80,7 @@ object frog {
 	}
 	
 	method sumarLlegada(){
-		if (cantidadLlegadas < 0){
+		if (cantidadLlegadas < 2){
 			cantidadLlegadas = cantidadLlegadas + 1
 			self.volverInicio()
 		}
