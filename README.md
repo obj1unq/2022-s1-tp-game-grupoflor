@@ -19,16 +19,16 @@ Hay que llevar a frogger una vez a cada meta para ganar el juego. Inicialmente s
 Se deben esquivar los obstaculos sorteados por el mapa, y en la tecer llegada a estos se sumara el ovni que te perseguira.
 
 MOVIMIENTO:
-Movimiento con las flechitas
-Supersalto con SPACE
+- Movimiento con las flechitas
+- Supersalto con SPACE
 
 PUNTUACION:
-Consultar puntuacion y vidas con V
+- Consultar puntuacion y vidas con V
 
 MUSICA:
-Subir volumen con W
-Bajar volumen con S
-Parar musica con M
+- Subir volumen con W
+- Bajar volumen con S
+- Parar musica con M
 
 ## Otros
 

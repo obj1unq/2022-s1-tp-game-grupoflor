@@ -59,18 +59,6 @@ class Tronco inherits Flotante{
 		}
 		
 	}
-	
-//	method moverseIzquierda() {
-//		
-//		if(not self.puedeMover()){
-//			position = position.left(1)
-//		}
-//		else{
-//			generadorTroncos.removerTroncoNorte(self)
-//			game.removeVisual(self)
-//		}
-//		
-//	}
 
 	method puedeMover(){
 		return  self.position() == game.at(9,7) or self.position() == game.at(9,9)
@@ -103,13 +91,8 @@ object generadorNenufares {
 	method generarNenufares(){
 		self.generarNenufarSur()
 		self.generarNenufarNorte()
-		self.reiniciarObjeto(ovni)
-		self.reiniciarObjeto(frog)
-	}
-	
-	method reiniciarObjeto(objeto){
-		game.removeVisual(objeto)
-		game.addVisual(objeto)
+		ovni.reiniciarObjeto()
+		frog.reiniciarObjeto()
 	}
 	
 	method generarNenufarSur() {
@@ -166,8 +149,8 @@ object ovni{
 	}
 	
 	method moverse(){
-		if (frog.cantidadLlegadas() > 1){
-			var otroPosicion = frog.position()
+		if (objetivo.cantidadLlegadas() > 1){
+			var otroPosicion = objetivo.position()
 			var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
 			var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else 0
 			if (self.position() != otroPosicion){
@@ -175,9 +158,14 @@ object ovni{
 			newY = newY.max(0).min(game.height() - 1)
 			position = game.at(newX, newY)
 		}
-		else self.teEncontro(frog)
+		else self.teEncontro(objetivo)
 		}
 	}
+	
+	 method reiniciarObjeto(){
+    	game.removeVisual(self)
+    	game.addVisual(self)
+    }
 }
 
 object anunciador{
@@ -197,17 +185,6 @@ object anunciador{
 	}
 }
 
-
-
-class Agua{
-	const image = 'agua.png'
-	var property position
-	
-	method teEncontro(frog){
-		frog.colisionado()
-	}
-}
-
 object agua{
 	
 	method estaEnAgua(rana){
@@ -215,7 +192,6 @@ object agua{
 	}
 	
 }
-
 
 
 object generadorFrutas{
@@ -254,10 +230,8 @@ object generadorAlcantarillas{
 	method generarAlcantarillas(){
 		const alcantarilla1 = new Alcantarilla(position = game.at(8,0))
 		const alcantarilla2 = new Alcantarilla(position = randomizer.emptyPosition())
-//		const alcantarilla3 = new Alcantarilla(position = randomizer.emptyPosition())
 		game.addVisual(alcantarilla1)
 		game.addVisual(alcantarilla2)
-//		game.addVisual(alcantarilla3)
 	}
 }
 
@@ -300,101 +274,3 @@ class Meta{
 		}
 	}
 }
-
-//object generadorNenufares {
-//	
-//	const property nenufaresGeneradosSur = []
-//	const property nenufaresGeneradosNorte = []
-//	
-//	method generarNenufares(){
-//		self.generarNenufarSur()
-//		self.generarNenufarNorte()
-//	}
-//	
-//	method generarNenufarSur() {
-//		if(nenufaresGeneradosSur.size() < 3){
-//			const nenufar = self.construirNenufarSur()
-//			nenufaresGeneradosSur.add(nenufar)
-//			game.addVisual(nenufar)
-//		}
-//	}
-//	
-//	method generarNenufarNorte() {
-//		if(nenufaresGeneradosNorte.size() < 3){
-//			const nenufar = self.construirNenufarNorte()
-//			nenufaresGeneradosNorte.add(nenufar)
-//			game.addVisual(nenufar)
-//		}
-//	}
-//
-//	method construirNenufarSur() {
-//			return new Nenufar(image = 'nenufar.png', position = randomizer.emptyPosition(6))
-//	}
-//	
-//	method construirNenufarNorte() {
-//			return new Nenufar(image = 'nenufar.png', position = randomizer.emptyPosition(8))
-//	}
-//	
-//	method removerNenufar(nenufar){
-//		if (nenufaresGeneradosSur.contains(nenufar)){
-//			nenufaresGeneradosSur.remove(nenufar)
-//		}
-//		else nenufaresGeneradosNorte.remove(nenufar)
-//	}
-//}
-
-
-//class Tronco inherits Flotante{
-//	method puedeMover(){
-//		return  self.position() == game.at(10,7)
-//	}
-//	
-//	method moverseEste() {
-//		if(not self.puedeMover()){
-//			position = position.left(1)
-//		}
-//		else{
-//			generadorTroncos.removerTronco(self)
-//			game.removeVisual(self)
-//		}
-//	}
-//}
-//
-//object generadorTroncos(){
-//	
-//}
-
-/* 
-object generadorFlotantes {
-
-	method generarFlotante(constructor) {
-			const flotante = self.construirFlotante(constructor)
-			constructor.agregarFlotante(flotante)
-			game.addVisual(flotante)
-	}
-
-	method construirFlotante(constructor) {
-		return constructor.construirFlotante()
-	}
-	
-}
-*/
-
-/*
-object generadorNenufare {
-	const property nenufaresGenerados = []
-	
-	method construirFlotante() {
-			return new Nenufar(image = 'nenufar.png', position = randomizer.emptyPosition(6))
-	}
-	
-	method agregarFlotante(flotante){
-		flotantesGenerador.add(flotante)
-	}
-	
-	method moverFlotantes() {
-		flotantesGenerador.forEach({flotante => flotante.moverse()})
-	}
-	
-}
- */

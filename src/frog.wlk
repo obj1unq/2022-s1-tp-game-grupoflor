@@ -6,7 +6,7 @@ import niveles.*
 object frog {
 	var property position = game.at(5,0)
 	var property image = "frogUP.png"	
-	var property vidas = 3
+	var property vidas = 2
 	var property puntaje = 0
 	var property cantidadLlegadas = 0
 	var property saltoDisponible = true
@@ -34,7 +34,6 @@ object frog {
 	}
 	
 	method terminar(pantalla, sonido) {
-//		game.say(self, mensaje)
 		game.clear()
 		game.addVisual(pantalla)
 		reproductor.pararMusica()
@@ -57,7 +56,7 @@ object frog {
     }
     
     method colisionado(){
-    	if(vidas == 1){
+    	if(vidas == 0){
 			self.perder()
 		}
 		else{
@@ -81,7 +80,7 @@ object frog {
 	}
 	
 	method sumarLlegada(){
-		if (cantidadLlegadas < 2){
+		if (cantidadLlegadas < 0){
 			cantidadLlegadas = cantidadLlegadas + 1
 			self.volverInicio()
 		}
@@ -126,6 +125,11 @@ object frog {
     	if (! puedeMover){
     		game.error('Estoy entrando en calor')
     	}
+    }
+    
+    method reiniciarObjeto(){
+    	game.removeVisual(self)
+    	game.addVisual(self)
     }
 
 }

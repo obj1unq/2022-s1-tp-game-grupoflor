@@ -5,14 +5,11 @@ import extras.*
 import niveles.*
 
 program juego {
-	
 	game.title("Frogger")
 	presentacion.iniciar()
 	game.height(11)
 	game.width(9)
 	game.cellSize(55)
 	game.boardGround('background2.jpg')
-	
-	
 	game.start()
 }
