@@ -1,6 +1,7 @@
 import wollok.game.*
 import vehiculos.*
 import extras.*
+import niveles.*
 
 object frog {
 	var property position = game.at(5,0)
@@ -11,10 +12,6 @@ object frog {
 	var property saltoDisponible = true
 	var property puedeMover = false
 	
-//	method image(direccion){
-//		return 'frog' + direccion.subfijo() + '.png'
-//		
-//	}
 
 	method saltar(){
 		self.validarSaltar()
@@ -29,30 +26,22 @@ object frog {
 	}
 	
 	method ganar() {
-		self.terminar("Gané!")		
+		self.terminar(pantallaVictoria, 'sonidoVictoria.mp3')
 	}
 	
 	method perder() {
-		self.terminar("Perdí!")
+		self.terminar(pantallaMuerte, 'sonidoMuerte.mp3')
 	}
 	
-	method terminar(mensaje) {
-		game.say(self, mensaje)
-		game.schedule(1000, {game.stop()})
+	method terminar(pantalla, sonido) {
+//		game.say(self, mensaje)
+		game.clear()
+		game.addVisual(pantalla)
+		reproductor.pararMusica()
+		reproductor.cambiarMusica(sonido)
+		reproductor.iniciarMusica()
+		game.schedule(8000, {game.stop()})
 	}
-
-//	method mover(direccion) {
-//        if (direccion == arriba.direccion()) {
-//        	position = direccion.siguiente()
-//            image = "frogUP.png"
-//        } else if (direccion == izquierda.direccion()) {
-//            image = "frogLeft.png"
-//        } else if (direccion == derecha.direccion()) {
-//            image = "frogRight.png"
-//        } else {
-//            image = "frogDown.png"
-//        }
-//    }
 
 	method mover(direccion) {
         const aDondeVoy = direccion.siguiente(position)
@@ -67,13 +56,9 @@ object frog {
     	image = 'frog' + direccion.subfijo() + '.png'
     }
     
-//    method mirarHacia(direccion){
-//    	return 'frog' + direccion + '.png'
-//    }
-    
     method colisionado(){
-    	if(vidas == 0){
-			self.perder()	
+    	if(vidas == 1){
+			self.perder()
 		}
 		else{
 			vidas-= 1
@@ -99,7 +84,6 @@ object frog {
 		if (cantidadLlegadas < 2){
 			cantidadLlegadas = cantidadLlegadas + 1
 			self.volverInicio()
-			saltoDisponible = true
 		}
 		else{self.ganar()} 
 	}

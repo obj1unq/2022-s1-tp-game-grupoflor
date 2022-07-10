@@ -13,21 +13,15 @@ object presentacion {
 	}
 }
 
-object pantallaCarga{
-	
-	const property image = "froggerfachero.jpg"
-	const property position = game.origin()
-	
-}
-
-
 
 object juego {
 	method iniciar(){
 	
+	reproductor.cambiarMusica('musicaFrog.mp3')
 	reproductor.iniciarMusica()
 	
 	game.removeVisual(pantallaCarga)
+	
 	generadorAlcantarillas.generarAlcantarillas()
 	generadorMeta.generarMeta()
 	
@@ -60,7 +54,7 @@ object juego {
 	
 	game.onTick(2000, 'frutas', {generadorFrutas.generarFruta()})
 	
-	game.onTick(500, 'posicion', {frog.validarPosicion()})
+	game.onTick(50, 'posicion', {frog.validarPosicion()})
 	
 	game.addVisual(ovni)
 	game.addVisual(anunciador)
@@ -73,6 +67,28 @@ object juego {
 	
 	}
 }
+
+object pantallaCarga{
+	
+	const property image = "froggerfachero.jpg"
+	const property position = game.origin()
+	
+}
+
+object pantallaMuerte{
+	
+	const property image = "pantallaMuerte.jpg"
+	const property position = game.origin()
+	
+}
+
+object pantallaVictoria{
+	
+	const property image = "creditosFrogger.jpg"
+	const property position = game.origin()
+	
+}
+
 
 object config {
 	
@@ -88,13 +104,38 @@ object config {
 
 }
 
-object reproductor {
+//object reproductor inherits Musica{
+//	
+//	override method musica(){
+//		musica = 'musicafrog.mp3'
+//	}
+//}
+
+//
+//class Musica{
+//	
+//	var property musica
+//	
+//}
+
+object reproductor{
+	var musica
+	
 	method iniciarMusica(){
-		const musica = game.sound("musicafrog.mp3")
+		
 		musica.shouldLoop(true)
 		keyboard.w().onPressDo({musica.volume(1)})
-		keyboard.s().onPressDo({musica.volume(0.5)})
-		keyboard.m().onPressDo({musica.volume(0)})78
-		game.schedule(500, { musica.play()} )
+		keyboard.s().onPressDo({musica.volume(0.2)})
+		keyboard.m().onPressDo({musica.volume(0)})
+		game.schedule(001, { musica.play()} )
+		
+	}
+	
+	method pararMusica(){
+		musica.stop()
+	}
+	
+	method cambiarMusica(musicaNueva){
+		musica = game.sound(musicaNueva)
 	}
 }
