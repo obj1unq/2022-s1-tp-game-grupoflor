@@ -9,7 +9,9 @@
 
 ## Capturas
 
-agregar captura
+![FroggerPantalla](froggerfachero.jpg "Pantalla de carga")
+![Frogger](captura.png "Captura del juego")
+
 
 ## Reglas de Juego / Instrucciones
 
