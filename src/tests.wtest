@@ -6,6 +6,8 @@ import extras.*
 describe 'tests'{
 	const autoNormal = new AutoParticular(image = 'car1.png', position = game.at(0,0))
 	const bala = new Bala(position = game.at(1,0))
+	const fruta = new Fruta(position = game.at(1,0))
+	const alcantarilla = new Alcantarilla(position = game.at(1,0))
 	
 	method initialize(){
 		game.clear()
@@ -13,31 +15,68 @@ describe 'tests'{
 		game.addVisual(anunciador)
 		game.addVisual(ovni)
 		game.addVisual(bala)
+		game.addVisual(fruta)
+		
 	}
 	
 	test 'frog choca con un autoNormal, pierde una vida y vuelve al inicio'{
-		assert.equals(3, frog.vidas())
-		autoNormal.teEncontro(frog)
 		assert.equals(2, frog.vidas())
-		assert.equals(game.at(5,0), frog.position())
+		autoNormal.teEncontro(frog)
+		assert.equals(1, frog.vidas())
+		assert.equals(game.at(7,0), frog.position())
 	}
 	
 	test 'frog choca con un ovni pierde vida y resetea posicion'{
-		assert.equals(3, frog.vidas())
-		ovni.teEncontro(frog)
 		assert.equals(2, frog.vidas())
-		assert.equals(game.at(5,0), frog.position())
+		ovni.teEncontro(frog)
+		assert.equals(1, frog.vidas())
+		assert.equals(game.at(7,0), frog.position())
 	}
 	
 	test 'frog recibe una bala y pierde vida y reseta posicion'{
-		assert.equals(3, frog.vidas())
-		bala.teEncontro(frog)
 		assert.equals(2, frog.vidas())
-		assert.equals(game.at(5,0), frog.position())
+		bala.teEncontro(frog)
+		assert.equals(1, frog.vidas())
+		assert.equals(game.at(7,0), frog.position())
 	}
 	
-//	test 'frog se cae al agua luego de que se mueve el tronco'{
-//		
-//	}
+	test 'error al querer salir del mapa'{
+		frog.position(game.at(11,0))
+		assert.throwsException({frog.mover(derecha)})
+	}
+	
+	test 'frog en el agua pierde 1 vida y resetea posicion'{
+		assert.equals(2, frog.vidas())
+		frog.position(game.at(4, 8))
+		frog.validarPosicion()
+		assert.equals(1, frog.vidas())
+		assert.equals(game.at(7,0), frog.position())
+	}
+	
+	test 'frog en un tronco no muere pero al moverse el tronco frog muere'{
+		const tronco = new Tronco(image = 'trunk' + 3 + '.png', position = game.at(4, 8))
+		game.addVisual(tronco)
+		assert.equals(2, frog.vidas())
+		frog.position(game.at(4, 8))
+		frog.validarPosicion()
+		assert.equals(2, frog.vidas())
+		tronco.moverse()
+		frog.validarPosicion()
+		assert.equals(1, frog.vidas())
+	}
+	
+	test 'frog come una fruta teniendo 75 puntos y recibe 1 vida extra y reseteo de puntos'{
+		frog.puntaje(75)
+		assert.equals(2, frog.vidas())
+		fruta.teEncontro(frog)
+		assert.equals(3, frog.vidas())
+		assert.equals(0, frog.puntaje())
+	}
+	
+	test 'frog cae en una alcantarilla y se le resetea la posicion sin perder vidas'{
+		frog.position(game.at(4,5))
+		alcantarilla.teEncontro(frog)
+		assert.equals(game.at(7,0), frog.position())
+	}
 
 }

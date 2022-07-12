@@ -60,7 +60,7 @@ object frog {
 			self.perder()
 		}
 		else{
-			vidas-= 1
+			vidas -= 1
 			self.volverInicio()
 			game.say(anunciador, 'Te quedan ' + vidas + 'vidas')
 		}
