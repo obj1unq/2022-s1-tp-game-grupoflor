@@ -43,6 +43,10 @@ object generadorTroncos{
 	method estaEnTronco(posicion){
 		return troncosGenerados.any({tronco => tronco.mismaPosicion(posicion)})
 	}
+	
+	method agregarTronco(tronco){              //este metodo se utiliza en los tests
+		troncosGenerados.add(tronco)
+	}
 }
 
 
@@ -241,7 +245,8 @@ class Alcantarilla{
 	
 	method teEncontro(frog){
 		frog.volverInicio()
-		game.say(frog, 'uh me resbalé :(')
+		frog.resetearPuntaje()
+		game.say(frog, 'perdí mis frutas :(')
 	}
 }
 

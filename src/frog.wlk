@@ -20,7 +20,7 @@ object frog {
 	}
 	
 	method validarSaltar(){
-		if (!saltoDisponible){
+		if (!saltoDisponible or !puedeMover){
 			self.error('no me quedan energias para saltar')
 		}
 	}
@@ -73,7 +73,7 @@ object frog {
 	method agregarPuntaje(numero){
 		const puntajeNuevo = puntaje + numero
 		if (puntajeNuevo >= 100){
-			puntaje = 0
+			self.resetearPuntaje()
 			vidas = vidas + 1
 		}
 		else puntaje = puntajeNuevo
@@ -103,12 +103,12 @@ object frog {
     }
     
     method validarPosicion(){
-    	if (self.muere()){
+    	if (self.posicionInvalida()){
     		self.colisionado()
     	}
     }
     
-    method muere(){
+    method posicionInvalida(){
     	return agua.estaEnAgua(position) and  !generadorTroncos.estaEnTronco(position) and !generadorNenufares.estaEnNenufar(position)
     }
     
@@ -130,6 +130,10 @@ object frog {
     method reiniciarObjeto(){
     	game.removeVisual(self)
     	game.addVisual(self)
+    }
+    
+    method resetearPuntaje(){
+    	puntaje = 0
     }
 
 }
