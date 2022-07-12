@@ -35,6 +35,7 @@ describe 'tests'{
 	}
 	
 	test 'error al querer salir del mapa'{
+		frog.liberarMovimiento()
 		frog.position(game.at(11,0))
 		assert.throwsException({frog.mover(derecha)})
 	}
