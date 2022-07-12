@@ -181,7 +181,7 @@ object anunciador{
 	}
 	
 	method cantidadADecir(rana){
-		return 3 - rana.cantidadLlegadas()
+		return 2 - rana.cantidadLlegadas()
 	}
 }
 
@@ -263,8 +263,10 @@ class Meta{
 	
 	method teEncontro(frog){
 		self.validarLlegada()
+		if (frog.cantidadLlegadas() < 2){
+			anunciador.cantidadLlegadas(frog)
+		}
 		frog.sumarLlegada()
-		anunciador.cantidadLlegadas(frog)
 		ocupada = true
 	}
 	
