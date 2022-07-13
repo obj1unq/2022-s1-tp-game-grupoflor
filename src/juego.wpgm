@@ -1,8 +1,15 @@
 import wollok.game.*
-import pepita.*
+import frog.*
+import vehiculos.*
+import extras.*
+import niveles.*
 
 program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
+	game.title("Frogger")
+	presentacion.iniciar()
+	game.height(11)
+	game.width(9)
+	game.cellSize(55)
+	game.boardGround('background2.jpg')
 	game.start()
 }

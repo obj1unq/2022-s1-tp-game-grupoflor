@@ -1,6 +1,100 @@
+import wollok.game.*
+import frog.*
+import vehiculos.*
+import extras.*
+import niveles.*
 
-test "testX" {
-
-	assert.that(true)
+describe 'tests'{
+	const autoNormal = new AutoParticular(image = 'car1.png', position = game.at(0,0))
+	const bala = new Bala(position = game.at(1,0))
+	const fruta = new Fruta(position = game.at(1,0))
+	const alcantarilla = new Alcantarilla(position = game.at(1,0))
+	const tronco = new Tronco(image = 'trunk' + 1 + '.png', position = game.at(4,8))
+	
+	method initialize(){
+		game.clear()
+		game.addVisual(frog)
+		game.addVisual(anunciador)
+		game.addVisual(ovni)
+		game.addVisual(bala)
+		game.addVisual(fruta)
+	}
+	
+	test 'frog choca con un autoNormal, pierde una vida y vuelve al inicio'{
+		assert.equals(2, frog.vidas())
+		autoNormal.teEncontro(frog)
+		assert.equals(1, frog.vidas())
+		assert.equals(game.at(7,0), frog.position())
+	}
+	
+	test 'frog recibe una bala y pierde vida y reseta posicion'{
+		assert.equals(2, frog.vidas())
+		bala.teEncontro(frog)
+		assert.equals(1, frog.vidas())
+		assert.equals(game.at(7,0), frog.position())
+	}
+	
+	test 'error al querer salir del mapa'{
+		frog.liberarMovimiento()
+		frog.position(game.at(11,0))
+		assert.throwsException({frog.mover(derecha)})
+	}
+	
+	test 'frog colisiona con la nave pero no pasa nada al no tener 2 llegadas'{
+		assert.equals(2, frog.vidas())
+		frog.cantidadLlegadas(0)
+		ovni.teEncontro(frog)
+		assert.equals(2, frog.vidas())
+	}
+	
+	test 'frog colisiona con el ovni pero si pierde vida al tener 2 llegadas'{
+		assert.equals(2, frog.vidas())
+		frog.cantidadLlegadas(2)
+		ovni.teEncontro(frog)
+		assert.equals(1, frog.vidas())
+	}
+	
+	test 'frog en el agua pierde 1 vida y resetea posicion'{
+		assert.equals(2, frog.vidas())
+		frog.position(game.at(4, 8))
+		frog.validarPosicion()
+		assert.equals(1, frog.vidas())
+		assert.equals(game.at(7,0), frog.position())
+	}
+	
+	test 'frog al estar en un tronco no se muere pero al moverse al agua frog pierde una vida y resetea posicion'{
+		generadorTroncos.agregarTronco(tronco)
+		frog.position(game.at(4,8))
+		assert.equals(2, frog.vidas())
+		frog.validarPosicion()
+		assert.equals(2, frog.vidas())
+		frog.position(game.at(4,9))
+		frog.validarPosicion()
+		assert.equals(1, frog.vidas())
+	}
+	
+	test 'frog come una fruta teniendo 75 puntos y recibe 1 vida extra y reseteo de puntos'{
+		frog.puntaje(75)
+		assert.equals(2, frog.vidas())
+		fruta.teEncontro(frog)
+		assert.equals(3, frog.vidas())
+		assert.equals(0, frog.puntaje())
+	}
+	
+	test 'frog cae en una alcantarilla y se le resetea la posicion perdiendo puntaje pero sin perder vidas'{
+		frog.position(game.at(4,5))
+		frog.puntaje(75)
+		alcantarilla.teEncontro(frog)
+		assert.equals(0, frog.puntaje())
+		assert.equals(game.at(7,0), frog.position())
+	}
+	
+	test 'frog no puede moverse sin liberar movimiento'{
+		assert.throwsException({frog.mover(arriba)})
+	}
+	
+	test 'frog no puede saltar sin liberar movimiento'{
+		assert.throwsException({frog.saltar()})
+	}
 
 }
