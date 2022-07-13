@@ -170,8 +170,7 @@ class Bala{
 	
 	method teEncontro(personaje){
 		personaje.colisionado()
-		generadorBalas.removerBala(self)
-		game.removeVisual(self)
+	
 	}
 }
 
